@@ -14,7 +14,7 @@ void main(){
 		UpCaseAlphabet[i] = uppercase;
 		uppercase++;
 	};
-	i = 0;
+	
 
 	//создаём массив английских букв нижнего регистра
 	char LowCaseAlphabet[26];
