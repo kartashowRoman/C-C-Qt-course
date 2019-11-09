@@ -23,7 +23,7 @@ int main(){
     	printf("%c", text[j]);
 		++num_sym;
 	}
-	char actual_sym[num_sym];
+	char actual_sym[num_sym-1];
 	
 	size_t size_text = sizeof(actual_sym);
 
