@@ -8,8 +8,8 @@ void main(){
 	//создаём массив английских букв верхнего регистра
 	char UpCaseAlphabet[26];
 	char uppercase = 65;
-	int i;
-	for( i = 0; i < 26; i++)
+	
+	for( int i = 0; i < 27; i++)
 	{
 		UpCaseAlphabet[i] = uppercase;
 		uppercase++;
@@ -19,7 +19,7 @@ void main(){
 	//создаём массив английских букв нижнего регистра
 	char LowCaseAlphabet[26];
 	char lowercase = 97;
-	for( i = 0; i < 26; i++)
+	for( int i = 0; i < 27; i++)
 	{
 		LowCaseAlphabet[i] = lowercase;
 		lowercase++;
@@ -33,54 +33,55 @@ void main(){
 	if((fp=fopen("txt.txt", "r+"))==NULL)
 	{
 
-	printf ("Cannot open file.\n");
+		printf ("Cannot open file.\n");
 
 	} else { // собираем символы
-	
-    fgets(sym, 10000, fp);
-	fclose(fp);
-	};
-	int z;
-	for(z = 0; sym[z] != '\0'; z++)
+
+   		fgets(sym, 10000, fp);
+		fclose(fp);
+	}
+
+	for(int z = 0; sym[z] != '\0'; z++)
 	{
 		printf("%c", sym[z]);
 
 	}
-	int x;
-	int t;
-	
-	// считаем символы
-	while(1){
-		for(t = 0; sym[t] != '\0'; t++)
-		{
-			for(x = 0; x <= 26; x++){
 
-			if(UpCaseAlphabet[t] == sym[x]) 
+	// подсчитываем символы
+
+	for(int t = 0; sym[t] != '\0'; t++)
+	{
+
+		for(int x = 0; x <= 26; x++)
+		{
+
+			if(sym[t] == UpCaseAlphabet[x]) 
+
 			{	
-						
-				numberUpper[t]++;
-				
-		
-			} else if(LowCaseAlphabet[t] == sym[x])
-			{	 
-			
-				numberLower[t]++; 
-				
-			
-			} 
-	
+				numberUpper[x]++;
+			}
+
 		}
+		for(int x = 0; x <= 26; x++)
+		{
+
+			if(sym[t] == LowCaseAlphabet[x])
+			{	 
+				numberLower[x]++; 
+			} 	
+
+		}
+	
 	}
-	break;	
-	}
-	int y;
+	
 	for(int y = 0; y < 26; y++)
 	{
-	printf("%c: %d \n", UpCaseAlphabet[y], numberUpper[y]);
-	printf("%c: %d \n", LowCaseAlphabet[y], numberLower[y]);
+		printf("%c: %d \n", UpCaseAlphabet[y], numberUpper[y]);
+		printf("%c: %d \n", LowCaseAlphabet[y], numberLower[y]);
 	};
 
 
 
 	
+
 }
