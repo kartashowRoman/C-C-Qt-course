@@ -5,7 +5,7 @@
 
 int memory_left = MEMORY_MAX;
 int memory_used = 0;
-int number_partition = 0;
+int number_partition = 1;
 char *memory_allocated = new char[MEMORY_MAX];
 struct partition{
 	char *partition = NULL;
@@ -18,7 +18,7 @@ int AddPartition();
 int ShowPartitions();
 int DelPartition();
 int MergePartitions();
-
+int CheckMemory();
 //Меню программы
 int Menu()
 {
@@ -41,45 +41,70 @@ int Menu()
 //Добавление раздела
 int AddPartition()
 {
-    if(memory_left > 0)
+    
+	CheckMemory();
+	int memory_input = 0;
+	std::cout<<"Введите размер раздела (минимум 1024 и максимум "<<memory_left<<")\n";
+    std::cin>>memory_input;
+		
+	int check = 0;
+
+	if(memory_input<1024 || memory_input>memory_left)
 	{
-		int memory_input = 0;
-		std::cout<<"Введите размер раздела (минимум 1024 и максимум "<<memory_left<<")\n";
-        std::cin>>memory_input;
-		
-
-		if(memory_input<1024 || memory_input>memory_left)
-		{
-			std::cout<<"Введите допустимый размер!!!\n";
-			return AddPartition();
-		}
-		
-		
-		
-		memory_left -= memory_input;
-		memory_used += memory_input;
-
-		all_partitions[number_partition].partition = new (memory_allocated) char[memory_input];
-		for(int j = 0; j < memory_input; j++)
-		{
-			all_partitions[number_partition].partition[j] = 'a';
-		}
-		all_partitions[number_partition].size = memory_input;
-		all_partitions[number_partition].number = ++number_partition;
-		
-		
-
-		std::cout<<"Раздел "<<number_partition<<" размером "<<memory_input<<" байт успешно добавлен\n";
-		std::cout<<"Памяти занято: "<<memory_used<<", Свободно: "<<memory_left<<'\n';
-		
-	} else 
-	{
-		std::cout<<"Свободной памяти не осталось\n";
+		std::cout<<"Введите допустимый размер!!!\n";
+		return AddPartition();
 	}
+		
+		
+		
+	memory_left -= memory_input;
+	memory_used += memory_input;
+
+	for(int i = 0; check != 1; i++)
+	{
+		if(all_partitions[i].partition == NULL && check != 1)
+		{
+			all_partitions[i].partition = new (memory_allocated) char[memory_input];
+			for(int j = 0; j < memory_input; j++)
+			{
+				all_partitions[i].partition[j] = 'a';
+			}
+			check++;
+			all_partitions[i].size = memory_input;
+			if(all_partitions[i].number == 0)
+			{
+				all_partitions[i].number = number_partition++;
+			}
+		}
+			
+	}
+		
+	check = 0;
+		
+		
+
+	std::cout<<"Раздел "<<number_partition<<" размером "<<memory_input<<" байт успешно добавлен\n";
+	std::cout<<"Памяти занято: "<<memory_used<<", Свободно: "<<memory_left<<'\n';
+		
+	
 	ShowPartitions();
 	
 	return Menu();
 }
+//проверка памяти 
+int CheckMemory()
+{
+	if(memory_left > 0)
+	{
+		return 0;
+	} else 
+	{
+		std::cout<<"Свободной памяти не осталось\n";
+		return Menu();
+	}
+}
+//проверка указателя разделa
+
 //Показать разделы 
 int ShowPartitions(){
 	std::cout<<"На данный момент имеются следующие разделы\n";
@@ -110,7 +135,7 @@ int DelPartition(){
 	memory_used -= all_partitions[option-1].size;
 
 	all_partitions[option-1].size = 0;
-	all_partitions[option-1].number = 0;
+	
 
 	for(int i = 0; i < all_partitions[option-1].size; i++)
 	{
@@ -152,7 +177,7 @@ int MergePartitions()
 		
 		all_partitions[i].partition = NULL;
 		all_partitions[i].size = 0;
-		all_partitions[i].number = 0;
+		
 		
 	} 
 	
