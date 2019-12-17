@@ -14,7 +14,6 @@ struct partition{
 };
 partition all_partitions[10];
 
-
 int AddPartition();
 int ShowPartitions();
 int DelPartition();
@@ -56,16 +55,15 @@ int AddPartition()
 		}
 		
 		
-			
-		for(int j = memory_used; j < memory_used+memory_input; j++)
-		{
-			memory_allocated[j] = 'a';
-		}
 		
 		memory_left -= memory_input;
 		memory_used += memory_input;
 
 		all_partitions[number_partition].partition = new (memory_allocated) char[memory_input];
+		for(int j = 0; j < memory_input; j++)
+		{
+			all_partitions[number_partition].partition[j] = 'a';
+		}
 		all_partitions[number_partition].size = memory_input;
 		all_partitions[number_partition].number = ++number_partition;
 		
@@ -103,16 +101,25 @@ int DelPartition(){
 	std::cout<<"Что удаляем?(Укажите номер раздела)\n";
 	int option = 0;
 	std::cin>>option;
+
 	all_partitions[option-1].partition=NULL;
+
 	std::cout<<"Раздел "<<all_partitions[option-1].number<<" успешно удалён\n";
+
 	memory_left += all_partitions[option-1].size;
 	memory_used -= all_partitions[option-1].size;
+
+	all_partitions[option-1].size = 0;
+	all_partitions[option-1].number = 0;
 
 	for(int i = 0; i < all_partitions[option-1].size; i++)
 	{
 		memory_allocated[i]=' ';
 	}
 	
+	
+	
+	ShowPartitions();
 	return Menu();
 
 }
@@ -132,8 +139,24 @@ int MergePartitions()
 	for(int i = option1-1; i < option2-1; i++)
 	{
 		all_partitions[option2-1].size = all_partitions[option2-1].size + all_partitions[i].size;
+		for(int j = 0; j < all_partitions[option2-1].size; j++)
+		{
+			all_partitions[i].partition[j] = ' ';
+		}
+
+		all_partitions[option2-1].partition = new (memory_allocated) char[all_partitions[option2-1].size + all_partitions[i].size];
+		for(int j = 0; j < all_partitions[option2-1].size; j++)
+		{
+			all_partitions[option2-1].partition[j] = 'a';
+		}
+		
 		all_partitions[i].partition = NULL;
+		all_partitions[i].size = 0;
+		all_partitions[i].number = 0;
+		
 	} 
+	
+	
 	ShowPartitions();
 	return Menu();
 }
