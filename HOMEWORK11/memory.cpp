@@ -196,7 +196,7 @@ int main()
 
 	Menu();
 
-	delete[] memory_allocated;
+	
     return 0;
 
 }
