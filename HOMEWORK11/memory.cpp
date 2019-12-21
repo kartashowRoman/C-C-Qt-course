@@ -60,6 +60,9 @@ int AddPartition()
 	memory_left -= memory_input;
 	memory_used += memory_input;
 
+	std::cout<<"Раздел "<<number_partition<<" размером "<<memory_input<<" байт успешно добавлен\n";
+	std::cout<<"Памяти занято: "<<memory_used<<", Свободно: "<<memory_left<<'\n';
+
 	for(int i = 0; check != 1; i++)
 	{
 		if(all_partitions[i].partition == NULL && check != 1)
@@ -83,8 +86,7 @@ int AddPartition()
 		
 		
 
-	std::cout<<"Раздел "<<number_partition<<" размером "<<memory_input<<" байт успешно добавлен\n";
-	std::cout<<"Памяти занято: "<<memory_used<<", Свободно: "<<memory_left<<'\n';
+	
 		
 	
 	ShowPartitions();
@@ -161,18 +163,26 @@ int MergePartitions()
 	std::cin>>option2;
 	
 		
-	for(int i = option1-1; i < option2-1; i++)
+	for(int i = option1; i < option2; i++)
 	{
-		all_partitions[option2-1].size = all_partitions[option2-1].size + all_partitions[i].size;
-		for(int j = 0; j < all_partitions[option2-1].size; j++)
+		all_partitions[option1-1].size = all_partitions[option1-1].size + all_partitions[i].size;
+		
+		all_partitions[option1-1].partition = new (memory_allocated) char[all_partitions[option1-1].size + all_partitions[i].size];
+
+		for(int j = 0; j < all_partitions[i].size; j++)
 		{
+
 			all_partitions[i].partition[j] = ' ';
+
 		}
 
-		all_partitions[option2-1].partition = new (memory_allocated) char[all_partitions[option2-1].size + all_partitions[i].size];
-		for(int j = 0; j < all_partitions[option2-1].size; j++)
+		
+
+		for(int j = 0; j < all_partitions[option1-1].size; j++)
 		{
-			all_partitions[option2-1].partition[j] = 'a';
+
+			all_partitions[option1-1].partition[j] = 'a';
+
 		}
 		
 		all_partitions[i].partition = NULL;
