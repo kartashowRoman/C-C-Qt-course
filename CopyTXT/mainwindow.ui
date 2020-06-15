@@ -14,19 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>100</y>
-      <width>201</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Copy text</string>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
@@ -37,11 +24,11 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="SelectText">
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>0</y>
+      <y>40</y>
       <width>201</width>
       <height>91</height>
      </rect>
@@ -49,6 +36,121 @@
     <property name="text">
      <string>Select text</string>
     </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>0</y>
+      <width>86</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Arabic</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chinese simple</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chinese traditional</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>English</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>French</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>German</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Italian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Japanese</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Kazakh</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Korean</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Kyrgyz</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Persian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Polish</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Portuguese </string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Russian</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Spanish</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Swedish</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Tajik</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Turkish</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Uzbek</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Vietnamese</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -19,6 +19,8 @@ public:
     QPixmap fragment;
     QString initialPath;
     QScreen* screen;
+    QString filename;
+    QString text_to_copy;
     int x_press;
     int y_press;
     int x_release;
@@ -28,17 +30,19 @@ public:
 
 
 
+
     ~MainWindow();
 private slots:
-    void on_pushButton_clicked();
+
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *eventREL);
+    void on_SelectText_clicked();
+    void DeleteFile();
+    void Back();
+    void Tesseract();
 
 
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_2_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

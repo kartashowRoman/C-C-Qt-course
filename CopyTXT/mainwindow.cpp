@@ -8,7 +8,6 @@
 #include <tesseract/baseapi.h>
 #include <QDir>
 #include <QStandardPaths>
-#include <QFileDialog>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QTextEdit>
@@ -16,6 +15,8 @@
 #include <QMouseEvent>
 #include <QRect>
 #include <QWidget>
+#include <QShortcut>
+#include <QFile>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -30,7 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
     y_release = 0;
     width = 0;
     height = 0;
+    filename = "copytxt";
+    text_to_copy = "";
 
+    new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(Back()));
 
 }
 
@@ -38,22 +42,69 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-QString text_to_copy = "";
-
-// Обработка картинки //
-void Tesseract(){
 
 
+
+void MainWindow::Tesseract(){
 
     tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
 
-    if (api->Init(NULL, "eng")) {
-        fprintf(stderr, "Could not initialize tesseract.\n");
-        exit(1);
+
+    if(ui->comboBox->currentIndex() == 0 ){
+        api->Init(NULL, "ara");
+    } else if (ui->comboBox->currentIndex() == 1){
+        api->Init(NULL, "chi_sim");
+    } else if (ui->comboBox->currentIndex() == 2){
+        api->Init(NULL, "chi_tra_vert"); // не работает
+    } else if (ui->comboBox->currentIndex() == 3){
+        api->Init(NULL, "eng");
+    } else if (ui->comboBox->currentIndex() == 4){
+        api->Init(NULL, "fra");
+    } else if (ui->comboBox->currentIndex() == 5){
+        api->Init(NULL, "deu");
+    } else if (ui->comboBox->currentIndex() == 6){
+        api->Init(NULL, "ita"); // некорректно
+    } else if (ui->comboBox->currentIndex() == 7){
+        api->Init(NULL, "jpn");
+    } else if (ui->comboBox->currentIndex() == 8){
+        api->Init(NULL, "kaz");
+    } else if (ui->comboBox->currentIndex() == 9){
+        api->Init(NULL, "kor");
+    } else if (ui->comboBox->currentIndex() == 10){
+        api->Init(NULL, "kir");
+    } else if (ui->comboBox->currentIndex() == 11){
+        api->Init(NULL, "fas");
+    } else if (ui->comboBox->currentIndex() == 12){
+        api->Init(NULL, "pol");
+    } else if (ui->comboBox->currentIndex() == 13){
+        api->Init(NULL, "por");
+    } else if (ui->comboBox->currentIndex() == 14){
+        api->Init(NULL, "rus");
+    } else if (ui->comboBox->currentIndex() == 15){
+        api->Init(NULL, "spa");
+    } else if (ui->comboBox->currentIndex() == 16){
+        api->Init(NULL, "swe");
+    } else if (ui->comboBox->currentIndex() == 17){
+        api->Init(NULL, "tgk");
+    } else if (ui->comboBox->currentIndex() == 18){
+        api->Init(NULL, "tur");
+    } else if (ui->comboBox->currentIndex() == 19){
+        api->Init(NULL, "uzb");
+    } else if (ui->comboBox->currentIndex() == 20){
+        api->Init(NULL, "vie");
+
+    } else {
+        api->Init(NULL, "eng");
     }
 
+
+    /*if (api->Init(NULL, "rus")) {
+        fprintf(stderr, "Could not initialize tesseract.\n");
+        exit(1);
+    }*/
+
     // Open input image with leptonica library
-    Pix *image = pixRead("/home/kartashoow/Desktop/copytext.png");
+    Pix *image = pixRead("copytxt");
     api->SetImage(image);
     // Get OCR result
     text_to_copy = api->GetUTF8Text();
@@ -65,51 +116,15 @@ void Tesseract(){
     delete api;
 
     pixDestroy(&image);
-
+    DeleteFile();
 
 
 }
 
-
-
-
-
-//Захват изображения //
-
-void MainWindow::on_pushButton_clicked()
-{
-
-
-    const QString format = "png";
-    initialPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-     if (initialPath.isEmpty())
-        initialPath = QDir::currentPath();
-    initialPath += tr("/copytext.") + format;
-
-    QFileDialog fileDialog(this, tr("Save As"), initialPath);
-    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog.setFileMode(QFileDialog::AnyFile);
-    fileDialog.setDirectory(initialPath);
-    QStringList mimeTypes;
-    foreach (const QByteArray &bf, QImageWriter::supportedMimeTypes())
-        mimeTypes.append(QLatin1String(bf));
-    fileDialog.setMimeTypeFilters(mimeTypes);
-    fileDialog.selectMimeTypeFilter("image/" + format);
-    fileDialog.setDefaultSuffix(format);
-    if (fileDialog.exec() != QDialog::Accepted)
-        return;
-    const QString fileName = fileDialog.selectedFiles().first();
-    if (!fragment.save(fileName)) {
-        QMessageBox::warning(this, tr("Save Error"), tr("The image could not be saved to \"%1\".")
-                             .arg(QDir::toNativeSeparators(fileName)));
-    }
-
-
-    Tesseract();
-    ui->textEdit->append(text_to_copy);
+void MainWindow::DeleteFile(){
+    QFile::remove(filename);
 }
 
-// Выделение области
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
@@ -120,10 +135,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     x_press = event->globalX();
     y_press = event->globalY();
-
-    select->show();
-
-    select->setWindowOpacity(0.1);
+    if(windowOpacity()==0){
+        select->show();
+    }
+    select->setWindowOpacity(0.2);
 
 
 }
@@ -134,14 +149,27 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 }
 
+void MainWindow::Back(){
+    setWindowOpacity( 1 );
+    showNormal();
+    ui->textEdit->show();
+}
+
 void MainWindow::mouseReleaseEvent(QMouseEvent *eventREL)
 {
 
     x_release = eventREL->globalX();
     y_release = eventREL->globalY();
 
+    if(x_release < x_press){
+        qSwap(x_release,x_press);
+        qSwap(y_release,y_press);
+    }
+
     width = x_release - x_press;
-    height =   y_release - y_press;
+    height = y_release - y_press;
+
+
     select->hide();
 
 
@@ -149,24 +177,27 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *eventREL)
             screen = window->screen();
     fragment = screen->grabWindow(0,x_press,y_press,width,height);
 
-    setWindowOpacity( 1 );
-    showNormal();
+    fragment.save(filename,"PNG");
+
+
+    Back();
 
 
 
+    Tesseract();
+    ui->textEdit->append(text_to_copy);
+    delete select;
 }
 
 
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_SelectText_clicked()
 {
-    // нужно добавить удалить файл
+    ui->textEdit->hide();
     setWindowOpacity( 0 );
     showFullScreen();
     ui->textEdit->clear();
-}
-
-void MainWindow::on_pushButton_2_clicked(bool checked)
-{
 
 }
+
+
